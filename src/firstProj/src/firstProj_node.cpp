@@ -22,6 +22,8 @@ typedef bg::model::point<float, 2, bg::cs::cartesian> point;
 typedef bg::model::box<point> box;
 typedef bg::model::linestring<point> linestring;
 
+void calculateDistance(point sonar, std::vector<box> obstaculos);
+
 // Funcion main
 int main(int argc, char** argv){
 	point sonar(0.0, 0.0);
@@ -33,7 +35,13 @@ int main(int argc, char** argv){
         box(point(5, -2), point(7, 1))
     };
 
-    for (int angle = 0; angle < 360; angle += 1) {
+	calculateDistance(sonar, obstaculos);
+    
+	return 0;
+}
+
+void calculateDistance(point sonar, std::vector<box> obstaculos){
+	for (int angle = 0; angle < 360; angle += 1) {
         float rad = angle * M_PI / 180.0;
         point direccion(std::cos(rad) * 100, std::sin(rad) * 100);
 
@@ -59,5 +67,4 @@ int main(int argc, char** argv){
             std::cout << "Ángulo " << angle << " grados: Sin obstáculo." << std::endl;
         }
     }
-	return 0;
 }
