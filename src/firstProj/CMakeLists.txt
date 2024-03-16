@@ -35,6 +35,7 @@ include_directories(
  target_link_libraries(firstProj_node
   ${catkin_LIBRARIES}
   tinyxml2
+  ${Boost_LIBRARIES}
  )
 
 ## Mark executables for installation
