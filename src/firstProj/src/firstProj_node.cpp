@@ -25,13 +25,15 @@ typedef bg::model::linestring<point> linestring;
 // Funcion main
 int main(int argc, char** argv){
 	point sonar(0.0, 0.0);
+
+	// Generamos tres obstaculos
     std::vector<box> obstaculos = {
         box(point(-5, -5), point(-3, 0)),
         box(point(2, 1), point(4, 3)),
         box(point(5, -2), point(7, 1))
     };
 
-    for (int angle = 0; angle < 360; angle += 10) {
+    for (int angle = 0; angle < 360; angle += 1) {
         float rad = angle * M_PI / 180.0;
         point direccion(std::cos(rad) * 100, std::sin(rad) * 100);
 
