@@ -26,16 +26,23 @@ void calculateDistance(point sonar, std::vector<box> obstaculos);
 
 // Funcion main
 int main(int argc, char** argv){
-	point sonar(0.0, 0.0);
-
+	point sonarPositions[3] = {
+		point(0.0,0.0),
+		point(0.5,0.0),
+		point(1.0,0.0)
+	};
 	// Generamos tres obstaculos
     std::vector<box> obstaculos = {
         box(point(-5, -5), point(-3, 0)),
         box(point(2, 1), point(4, 3)),
         box(point(5, -2), point(7, 1))
     };
-
-	calculateDistance(sonar, obstaculos);
+	// Lanzar la siguiente funcion con tres puntos diferentes:
+	for (int i=0; i<3; i++){
+		calculateDistance(sonarPositions[i], obstaculos);
+		std::cout << "--------------------------" << std::endl;
+	}
+	
     
 	return 0;
 }
