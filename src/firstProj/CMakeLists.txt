@@ -36,6 +36,9 @@ include_directories(
   ${catkin_LIBRARIES}
   tinyxml2
   ${Boost_LIBRARIES}
+  sfml-graphics
+  sfml-window
+  sfml-system
  )
 
 ## Mark executables for installation
