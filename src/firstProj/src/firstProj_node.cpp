@@ -26,9 +26,19 @@ typedef bg::model::linestring<point> linestring;
 
 // Prototipos de funciones
 void calculateDistance(point sonar, std::vector<box> obstaculos, int laserRadius);
-void particlesGeneration (int numberOfParticles, point arrayOfParticles[]);
+void particlesGeneration (int numberOfParticles, Particle arrayOfParticles[]);
 
+// Definicion de una Particula. No se agrega la distancia porque NO forma parte de la particula.
+// Es un valor que se obtiene tras su creacion.
+struct Particle {
+    point position;
+    float direction;
+};
+
+// ========================================================
 // Funcion main
+// ========================================================
+
 int main(int argc, char** argv){
 
     // ========================================================
@@ -39,7 +49,7 @@ int main(int argc, char** argv){
     const int laserRadius = 300;
     const int numberOfParticles = 1;
     point sonarPositions[3];
-    point arrayOfParticles [numberOfParticles]; // Array con Particulas aleatorias
+    Particle arrayOfParticles [numberOfParticles]; // Array con Particulas aleatorias
     // point arrayOfParticles [numberOfParticles] = {point(0.0,0.0)};
     float distancesOfPartciles [numberOfParticles][360]; // Guarda las distancias de las particulas en cada iteracion
     
@@ -69,8 +79,10 @@ int main(int argc, char** argv){
 	// Calculamos las distancias de las particulas a los obstaculos
 	for (int i=0; i<numberOfParticles; i++){
 		std::cout << "-----------------------Comienzo particula-----------------------------" << std::endl;
-        std::cout << "POSICION:"<< bg::get<0>(arrayOfParticles[i])<<"," <<bg::get<1>(arrayOfParticles[i]) << std::endl;
-		calculateDistance(arrayOfParticles[i], obstaculos, laserRadius);
+        std::cout << "POSICION:"<< bg::get<0>(arrayOfParticles[i].position)<<"," <<bg::get<1>(arrayOfParticles[i].position) << std::endl;
+		
+        calculateDistance(arrayOfParticles[i].position, obstaculos, laserRadius);
+        
         std::cout << "-----------------------Fin Particula-----------------------------" << std::endl;
 	}
 
@@ -141,7 +153,7 @@ int main(int argc, char** argv){
 }
 
 // ========================================================
-// Definicion de funciones extternas
+// Definicion de funciones externas
 // ========================================================
 
 // No es necesario poner obstaculos como parametro, ya que el mapa es conocido. Puede ir en el main.
@@ -176,7 +188,7 @@ void calculateDistance(point sonar, std::vector<box> obstaculos, int laserRadius
     }
 }
 
-void particlesGeneration (int numberOfParticles, point arrayOfParticles[]){
+void particlesGeneration (int numberOfParticles, Particle arrayOfParticles[]){
     // Motor de generación de números aleatorios
     std::mt19937 motor(static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()));
 
@@ -184,8 +196,9 @@ void particlesGeneration (int numberOfParticles, point arrayOfParticles[]){
     // Distribución uniforme entre 1 y 100 (inclusive)
     std::uniform_int_distribution<> width_distribution(-190, 190);
     std::uniform_int_distribution<> height_distribution(-140, 140);
-
-    // Guarda en el array los puntos aleatorios
-    arrayOfParticles[i]  = point(width_distribution(motor),height_distribution(motor));
+    std::uniform_real_distribution<> direction_distribution(-1,1);
+    // Guarda en el array los puntos aleatorios.
+    arrayOfParticles[i].position  = point(width_distribution(motor),height_distribution(motor));
+    arrayOfParticles[i].direction = direction_distribution(motor)*M_PI;
     }
 }
